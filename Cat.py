@@ -121,7 +121,7 @@ class Cat:
 
         # Exit for the game!
         if GameOver:
-            button = Button(gui.frame,text = "Exit",fg = "red",font = ("Arial",14,"bold"),command = lambda: sys.exit())
+            button = Button(gui.frame,text = "Exit",fg = "red",font = ("Arial",14,"bold"),command = lambda:gui.root.destroy())
             button.pack()
 
             gui.root.protocol("WM_DELETE_WINDOW",lambda:sys.exit()) 
