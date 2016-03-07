@@ -41,7 +41,7 @@ class GUI:
     def CreatCheckBox(self,frame,Text):
         check = IntVar()
         checkbox = Checkbutton(frame, text= Text, variable = check)
-        checkbox.pack()
+        checkbox.pack(side = LEFT)
         
         return check
 
