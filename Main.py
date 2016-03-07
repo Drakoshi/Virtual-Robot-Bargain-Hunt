@@ -7,88 +7,8 @@ from TextureHandler import Textures
 from Dog import Dog
 from Cat import Cat
 from Gui import GUI
-
-class Map():
-    """Base class for maps"""
-    def __init__(self,filePath):
-        self.mapList = [] 
-        self.ReadSplit(filePath)
-        self.ExitX = 100
-        self.ExitY = 100
-
-    def ReadSplit(self,filePath):
-        """Reads the map and places into 2D array/list,
-           no returns, puts it directly into class"""
-
-        file = open(filePath,"r")
-        string = file.read()
-        file.close()
-
-        Pre = string.rsplit("\n")
-
-        for i in Pre:
-            self.mapList.append(i.split())
-
-    def DisplayMap(self,gui,h = 500, w = 500, d = 50):
-
-        for i in range(int(h / d)):
-            y = i * d
-            for j in range(int(w / d)):
-                x = j * d
-                
-                # Add more elif for more options
-                if self.mapList[i][j] == "1":
-                    gui.CreateImageRectangle(Textures.TextureDict["grass"],x,y)
-                elif self.mapList[i][j] == "2":
-                    gui.CreateImageRectangle(Textures.TextureDict["path"],x,y)
-                elif self.mapList[i][j] == "3":
-                    gui.CreateImageRectangle(Textures.TextureDict["tree"],x,y)
-                elif self.mapList[i][j] == "4":
-                    gui.CreateImageRectangle(Textures.TextureDict["fenceH"],x,y)
-                elif self.mapList[i][j] == "5":
-                    gui.CreateImageRectangle(Textures.TextureDict["fenceV"],x,y)
-                elif self.mapList[i][j] == "6":
-                    gui.CreateImageRectangle(Textures.TextureDict["bush"],x,y)
-                elif self.mapList[i][j] == "7":
-                    gui.CreateImageRectangle(Textures.TextureDict["floor"],x,y)
-                elif self.mapList[i][j] == "8":
-                    gui.CreateImageRectangle(Textures.TextureDict["wall"],x,y)
-                elif self.mapList[i][j] == "9":
-                    gui.CreateImageRectangle(Textures.TextureDict["table"],x,y)
-                elif self.mapList[i][j] == "10":
-                    gui.CreateImageRectangle(Textures.TextureDict["bed"],x,y)
-                elif self.mapList[i][j] == "11":
-                    gui.CreateImageRectangle(Textures.TextureDict["door"],x,y)
-                    # used to determine where the exit is in a house
-                    self.ExitX = x 
-                    self.ExitY = y
-                elif self.mapList[i][j] == "12":
-                    gui.CreateImageRectangle(Textures.TextureDict["box"],x,y)    
-                else:
-                    raise ValueError("Unidentified symbol was found in MapList")   
-                
-    def Search(self,gui,strTarget):
-        """Search Imlementation for houses, but no navigation to houses :(
-           strTarget - string for targeted texture"""
-        canvasItems = gui.canvas.find_all()
-
-        foundList = []
-
-        # Linear search through list of items on canvas
-        # we cannot use binary search since its not a number and there is no good criteria to sort by
-        # since we are searching for an object with specific picture
-        for i in canvasItems:
-            if gui.canvas.itemcget(i,"image") == Textures.TextStr(strTarget):
-                foundList.append(gui.canvas.coords(i))
-
-        return foundList
-
-    # Should be changed in child class or not used
-    def Execute():
-        print("BASE CLASS, shit went wrong OR u suck, @execute")
-
-    def preChange():
-        print("BASE CLASS, shit went wrong OR u suck, @change")
+from MapEditor import MapEditor
+from Map import Map
 
 class mExterior(Map):
     """Exterior map class, 
@@ -285,7 +205,7 @@ class Info:
     availableItems = ["Food","Toys","Mouse","Bells","Catnip","Milk","Trophy"]
     selectedItems = []
 
-    def Transition(diffvar, catname, items,gui):
+    def Transition(diffvar, catname, items,gui,orig):
         for i in items:
             if i.get() == 1:
                 Info.selectedItems.append(True)
@@ -296,12 +216,14 @@ class Info:
         Info.difficulty = diffvar.get()
 
         # Setup for rest of the program
-        Textures.ReadTexture()
-
         dMaps = {}
-    
-        dMaps["outside"] = mExterior("Layouts/Outside Layout.txt")
-        dMaps["inside"] = mInterior("Layouts/Inside Layout.txt")
+        
+        if orig.get() == 1:
+            dMaps["outside"] = mExterior("Layouts/Outside Layout Original.txt")
+            dMaps["inside"] = mInterior("Layouts/Inside Layout Original.txt")
+        else: 
+            dMaps["outside"] = mExterior("Layouts/Outside Layout.txt")
+            dMaps["inside"] = mInterior("Layouts/Inside Layout.txt")
 
         house = House()
     
@@ -349,23 +271,34 @@ def mainmenu(gui):
 
     easy = Radiobutton(frame3, text = "Easy", fg = "green", variable = diffvar, value = 1)
     easy.pack(side = LEFT)
+
     med = Radiobutton(frame3, text = "Medium", fg = "orange", variable = diffvar, value = 2)
     med.pack(side = LEFT)
+
     med.select() # default difficulty
     hard = Radiobutton(frame3, text = "Hard", fg = "red", variable = diffvar, value = 3)
     hard.pack(side = LEFT)
 
     gui.CreateEmptySpace(gui.frame)
-    
+
     #Tutorial Button
     tutorialbutton = Button(gui.frame, text="TUTORIAL",font = ("Arial",14,"bold"),fg = 'blue', command = lambda: tut_window(gui))
     tutorialbutton.pack()
 
     #Start Button
-    startbutton = Button(gui.frame, text="PLAY!",font = ("Arial",14,"bold"),fg ='purple',command = lambda: Info.Transition(diffvar,catname,var,gui)) 
+    startbutton = Button(gui.frame, text="PLAY!",font = ("Arial",14,"bold"),fg ='purple',command = lambda: Info.Transition(diffvar,catname,var,gui,orig)) 
     startbutton.pack()
 
     gui.CreateEmptySpace(gui.frame)
+
+    orig = gui.CreatCheckBox(gui.frame,"Load Original?")
+
+    text = Label(gui.frame,text = "(includes Editor and Game)")
+    text.pack()
+
+    # Map editor button for my implementation
+    mapEditor = Button(gui.frame, text="Map Editor",font = ("Arial",12,"bold"),command = lambda:MapEditor(orig))
+    mapEditor.pack()
     
 def tut_window(self):
     # Function to create tutorial window.
@@ -390,6 +323,7 @@ def main():
     gui = GUI(root,"Cat Hunt")
 
     # To main menu and beyond
+    Textures.ReadTexture()
     mainmenu(gui)
     
     # added to exit the program if the main window is closed. 
