@@ -2,6 +2,8 @@ from TextureHandler import Textures
 from Gui import GUI
 from tkinter import *
 from random import randint
+from LB import *
+import winsound
 
 class Cat:
     """ Class for the cat; a.k.a the main character of the game"""
@@ -17,6 +19,7 @@ class Cat:
     def death(self):
         """Drops an item and increases death count"""
         Cat.deaths += 1
+        winsound.PlaySound('game over',winsound.SND_FILENAME)
 
         if not len(Cat.inventory) == 0:
             rInt = randint(0,len(Cat.inventory)-1)
@@ -24,9 +27,11 @@ class Cat:
             print(self.name + " #" + str(Cat.deaths) +" died\nAnd dropped an item")
         else:
             print(self.name + " #" + str(Cat.deaths) +" died")
+        
 
     def itemPickUp(self, Item):
         """takes item, the item should be class Item"""
+        winsound.PlaySound('Pickup_Coin7',winsound.SND_FILENAME)
 
         Cat.inventory.append(Item)
         print(str(Item)  + " added to inventory")
@@ -85,6 +90,7 @@ class Cat:
         self.showInventory(gui,GameOver = gameover)
 
     def showInventory(self,gui = None, GameOver = False):
+        winsound.Beep(2000,100)
         """Seperate window for inventory"""
 
         # in case if the function is called from SortItems
@@ -121,12 +127,13 @@ class Cat:
 
         # Exit for the game!
         if GameOver:
-            button = Button(gui.frame,text = "Exit",fg = "red",font = ("Arial",14,"bold"),command = lambda:gui.root.destroy())
+            button = Button(gui.frame,text = "Exit",fg = "red",font = ("Arial",14,"bold"),command = lambda: gui.root.destroy())
             button.pack()
 
             gui.root.protocol("WM_DELETE_WINDOW",lambda:sys.exit()) 
 
         # Main loop
+        leader(self) 
         gui.root.mainloop
 
     def CatKeyBinds(self,gui,box):
@@ -159,6 +166,7 @@ class Cat:
             return False
 
     def LeftKey(self,gui,nX,nY):
+        winsound.Beep(2500,25)
         try:
             if gui.canvas.coords(self.catID)[0] > 0 and self.CheckAhead(gui,nX,nY):
                 gui.MoveObject(self.catID, nX, nY)
@@ -166,6 +174,7 @@ class Cat:
             pass
 
     def RightKey(self,gui,nX,nY, canvasWidth):
+        winsound.Beep(2500,25)
         try:
             if gui.canvas.coords(self.catID)[0] < canvasWidth-50 and self.CheckAhead(gui,nX,nY):
                 gui.MoveObject(self.catID, nX, nY)
@@ -173,6 +182,7 @@ class Cat:
             pass
         
     def DownKey(self,gui,nX,nY, canvasHeight):
+        winsound.Beep(2500,25)
         try:
             if gui.canvas.coords(self.catID)[1] < canvasHeight-50 and self.CheckAhead(gui,nX,nY):
                 gui.MoveObject(self.catID, nX, nY)
@@ -180,6 +190,7 @@ class Cat:
             pass
 
     def UpKey(self,gui,nX,nY):
+        winsound.Beep(2500,25)
         try:
             if gui.canvas.coords(self.catID)[1] > 0 and self.CheckAhead(gui,nX,nY):
                 gui.MoveObject(self.catID, nX, nY)
