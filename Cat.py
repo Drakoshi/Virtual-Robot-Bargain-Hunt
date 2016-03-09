@@ -46,17 +46,20 @@ class Cat:
             pass
 
     def SortItems(self,criteria,gui,gameover):
+        """Sorting items by different criteria,
+           Using modifief Selection sort algorithm"""
         sortList = self.inventory 
 
         if criteria == "qualityD": # quality high to low
             for i in range(len(sortList)):
                 for j in range(i+1,len(sortList)):
                     if sortList[i].quality < sortList[j].quality:
+                        # Swapping elements
                         tmp = sortList[i]
                         sortList[i] = sortList[j]
                         sortList[j] = tmp
         
-        if criteria == "qualityA": # quality low to high
+        elif criteria == "qualityA": # quality low to high
             for i in range(len(sortList)):
                 for j in range(i+1,len(sortList)):
                     if sortList[i].quality > sortList[j].quality:
