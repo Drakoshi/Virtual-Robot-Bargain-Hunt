@@ -68,7 +68,8 @@ class Map():
                     raise ValueError("Unidentified symbol was found in MapList")   
                 
     def Search(self,gui,strTarget):
-        """Search Imlementation for houses, but no navigation to houses :(
+        """Search Imlementation
+           Find all objects with specified texture
            strTarget - string for targeted texture"""
         canvasItems = gui.canvas.find_all()
 
