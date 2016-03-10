@@ -338,23 +338,7 @@ def mainmenu(gui):
     var = []
     for item in Info.availableItems:
         var.append(gui.CreatCheckBox(framebig,item))
-
-    #select cat
-    selectcat = Label(gui.frame, text="Select your cat",fg="blue", font = ("Arial",14))
-    selectcat.pack()
-
-    catframe = Frame(gui.frame)
-    catframe.pack()
-
-    Cselection = 0
-
-    nyan = Radiobutton(catframe, text="Nyan cat", variable = Cselection, value = 1)
-    nyan.pack(side = LEFT)
-    nyan.select()
-    snowball = Radiobutton(catframe, text="Snowball II", variable = Cselection, value = 2)
-    snowball.pack(side = LEFT)  
-       
-
+    
     #select difficutly
     diffvar = IntVar()
         
@@ -371,7 +355,6 @@ def mainmenu(gui):
     med.select() # default difficulty
     hard = Radiobutton(frame3, text = "Hard", fg = "red", variable = diffvar, value = 3)
     hard.pack(side = LEFT)
- 
 
     gui.CreateEmptySpace(gui.frame)
     
