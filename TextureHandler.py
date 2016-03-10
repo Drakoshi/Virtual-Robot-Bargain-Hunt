@@ -1,4 +1,4 @@
-from tkinter import * # required for PhotoImage
+﻿from tkinter import * # required for PhotoImage
 
 """Faced problems when i needed this class in Main and Cat files
    So moved it into seperate file"""
@@ -16,8 +16,7 @@ class Textures():
         Textures.TextureDict["fenceH"] = PhotoImage(file = "Textures/fenceH.png")
         Textures.TextureDict["fenceV"] = PhotoImage(file = "Textures/fenceV.png")
         Textures.TextureDict["tree"] = PhotoImage(file = "Textures/tree.png")
-        Textures.TextureDict["house"] = PhotoImage(file = "Textures/house.png")
-        Textures.TextureDict["cat"] = PhotoImage(file = "Textures/cat.png")
+        Textures.TextureDict["house"] = PhotoImage(file = "Textures/house.png")        
         Textures.TextureDict["dog"] = PhotoImage(file = "Textures/dog.png")
         Textures.TextureDict["bush"] = PhotoImage(file = "Textures/bush.png")
         Textures.TextureDict["floor"] = PhotoImage(file = "Textures/floorboards.png")
@@ -25,6 +24,9 @@ class Textures():
         Textures.TextureDict["table"] = PhotoImage(file = "Textures/table.png")
         Textures.TextureDict["bed"] = PhotoImage(file = "Textures/bed.png")
         Textures.TextureDict["door"] = PhotoImage(file = "Textures/door.png")  
+
+
+        Textures.TextureDict["cat"] = PhotoImage(file = "Textures/cat.png")
 
     def GetTextureKeys():
         return Textures.TextureDict.keys()
