@@ -1,5 +1,10 @@
 ﻿import sys
-from tkinter import *
+try:
+    # for Python 3
+    from tkinter import *
+except ImportError:
+    # for Python 2
+    from Tkinter import *
 from random import * # for random placement of houses
 
 # Import from our files

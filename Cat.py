@@ -1,6 +1,11 @@
 from TextureHandler import Textures
 from Gui import GUI
-from tkinter import *
+try:
+    # for Python 3
+    from tkinter import *
+except ImportError:
+    # for Python 2
+    from Tkinter import *
 from random import randint
 
 class Cat:

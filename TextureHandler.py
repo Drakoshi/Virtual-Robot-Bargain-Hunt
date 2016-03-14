@@ -1,4 +1,9 @@
-from tkinter import * # required for PhotoImage
+try:
+    # for Python 3
+    from tkinter import *
+except ImportError:
+    # for Python 2
+    from Tkinter import *
 
 """Faced problems when i needed this class in Main and Cat files
    So moved it into seperate file"""
